@@ -1,5 +1,5 @@
-"""Using the colour dict provided,it creates a variable 
-colourList which contains dictionaries with the form 
+"""Using the color dict provided,it creates a variable 
+colorList which contains dictionaries with the form 
 name(str),rgb(tuple),hls(tuple)"""
 
 def rgbToHls(rgb):
@@ -24,6 +24,26 @@ def rgbToHls(rgb):
     return (round(60*(((red - green)/delta) + 4),2),
            round(light,2),
            round(delta/(1-abs(2*light-1)),2))
+hueList = ["red","red-orange","orange-brown","orange-yellow","yellow",
+            "yellow-green","green","green-cyan","cyan","cyan-blue","blue",
+            "blue-magenta","magenta","magenta-pink","pink","pink-red"]
+
+def colorNeighbour(color):
+  if(color in hueList):
+    try:
+      return (hueList[hueList.index(color)-1],
+             hueList[hueList.index(color)+1])
+    except Exception:
+      try:
+        return (hueList[hueList.index(color)-1],"red")
+      except Exception:
+        return("red-orange","pink-red")
+  else:
+    return "i don't","care"
+
+
+    
+  
 
 def nameOfHue(hls):
   hue = hls[0]
@@ -69,22 +89,3 @@ def nameOfHue(hls):
         return "pink"
       elif hue > 345 and hue <= 355:
         return "pink-red"
-
-shades = open("./../colours/colour_dict","r")
-currChar = str(" ")
-colourList = []
-listCounter = 0
-while currChar != "":
-  colourList.append({"name":0, "rgb":0, "hls":0})
-  shades.read(8) #"Resene_
-  currLine = ""
-  currChar = shades.read(1)
-  while currChar != "\n" and currChar != "" :
-    currLine = currLine + currChar
-    currChar = shades.read(1)
-  name,colours = currLine.split("\"")
-  red,green,blue = colours.split()
-  colourList[listCounter]["name"] = name
-  colourList[listCounter]["rgb"] = (int(red),int(green),int(blue))
-  colourList[listCounter]["hls"] = rgbToHls(colourList[listCounter]["rgb"])
-  listCounter = listCounter + 1
